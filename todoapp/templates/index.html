@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static '/css/main.css' %}">
+</head>
+<body>
+
+<div class="topnav">
+ 
+  <div class="search-container">
+    <form action="/action_page.php">
+        <div class="contain">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit">Submit</button>
+    </div>
+    </form>
+  </div>
+</div>
+<div class="btn">
+    <button class="empty-state-button">
+      <a href="{% url 'createTask' %}">ADD TASK!</a>
+  </button>
+</div>
+<div class="wrap">
+<div class="card card-body">
+        
+    {% for task in tasks %}
+        <div class="contentdiv">
+            
+            <h4>{{task.name}}</h4>
+            <p>{{task.desc}}</p>
+            <td><a class="btn btn-sm btn-info" href="{% url 'update_task' task.id %}">Update</a></td>
+            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_task' task.id %}">Delete</a></td>
+        </div>
+    {% endfor %}
+</div>
+
+</div>
+
+</body>
+</html>

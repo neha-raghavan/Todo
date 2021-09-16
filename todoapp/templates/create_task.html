@@ -1,0 +1,16 @@
+{%  extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1>TASK</h1>
+    {% include 'message.html' %}
+<form method="POST">
+  {% csrf_token %} 
+  <fieldset class="form-group">
+    {{ form.as_p }}
+  </fieldset>
+  <div class="form-group">
+    <button class="btn btn-outline-info" type="submit">Save</button>
+  </div>
+  <p>{{ message }}</p>
+</form>
+{% endblock %}
