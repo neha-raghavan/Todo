@@ -1,8 +1,13 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Task
-from .forms import TaskForm
+from .forms import *
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate,logout,login
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
@@ -44,3 +49,40 @@ def UpdateTask(request,pk):
             return redirect('/')
     context={'form':form}
     return render(request,'create_task.html',context)
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, f'Your account has been created. You can log in now!')    
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+
+    context = {'form': form}
+    return render(request, 'signup.html', context)
+
+
+def user_login(request):
+    if request.method == 'POST':
+            username = request.POST.get('username')
+            password =request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.info(request, 'Username OR password is incorrect')
+
+    context = {}
+    return render(request, 'login.html', context)
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect('login')
